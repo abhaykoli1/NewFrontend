@@ -3,22 +3,52 @@ import AuthHeader from "../components/AuthHeader";
 import { Eye, EyeOff, Mail, Lock, User, Phone } from "lucide-react";
 import API from "../api";
 
+import CountryCodeDropdown from "../components/CountryCodeSelect.jsx";
+import { countryCodes, validatePassword } from "../data/countryCodes";
+
 export default function Signup() {
   const [show, setShow] = useState(false);
+  const [error, setError] = useState("");
+
   const [form, setForm] = useState({
     name: "",
+    countryCode: "+91",
     phone: "",
     email: "",
     password: "",
   });
 
+  // 🔢 get max digits from regex
+  const getMaxDigits = () => {
+    const c = countryCodes.find(
+      (c) => c.code === form.countryCode
+    );
+    if (!c) return 15;
+
+    const match = c.pattern.toString().match(/\{(\d+),?(\d+)?\}/);
+    return match ? Number(match[2] || match[1]) : 15;
+  };
+
   const submit = async () => {
+    setError("");
+
+    if (!validatePassword(form.password)) {
+      setError(
+        "Password must be 8+ chars, uppercase, lowercase, number & symbol"
+      );
+      return;
+    }
+
     try {
-      await API.post("/auth/signup", form);
+      await API.post("/auth/signup", {
+        ...form,
+        phone: `${form.countryCode}${form.phone}`,
+      });
+
       alert("Signup successful");
       window.location = "/login";
     } catch (err) {
-      alert(err.response?.data?.message || "Signup failed");
+      setError(err.response?.data?.message || "Signup failed");
     }
   };
 
@@ -35,24 +65,45 @@ export default function Signup() {
           icon={<User />}
           placeholder="First Name"
           value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, name: e.target.value })
+          }
         />
 
-        <Input
-          icon={<Phone />}
-          placeholder="Mobile Number"
-          value={form.phone}
-          onChange={(e) => setForm({ ...form, phone: e.target.value })}
-        />
+        {/* 📞 Phone Input FIXED */}
+        <div className="w-full max-w-sm bg-white rounded-lg flex items-center px-4 py-3 mb-4">
+          <CountryCodeDropdown
+            value={form.countryCode}
+            onSelect={(code) =>
+              setForm({ ...form, countryCode: code, phone: "" })
+            }
+          />
+          <Phone className="text-gray-400 mx-2" size={18} />
+          <input
+            type="tel"
+            inputMode="numeric"
+            placeholder="Mobile Number"
+            maxLength={getMaxDigits()}
+            className="w-full outline-none text-black"
+            value={form.phone}
+            onChange={(e) => {
+              const digits = e.target.value.replace(/\D/g, "");
+              setForm({ ...form, phone: digits });
+            }}
+          />
+        </div>
 
         <Input
           icon={<Mail />}
           placeholder="Email Address"
           value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, email: e.target.value })
+          }
         />
 
-        <div className="w-full max-w-sm bg-white rounded-lg flex items-center px-4 py-3 mb-4">
+        {/* 🔐 Password */}
+        <div className="w-full max-w-sm bg-white rounded-lg flex items-center px-4 py-3 mb-2">
           <Lock className="text-gray-400 mr-3" size={20} />
           <input
             type={show ? "text" : "password"}
@@ -67,6 +118,10 @@ export default function Signup() {
             {show ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
+
+        {error && (
+          <p className="text-red-400 text-sm mb-2">{error}</p>
+        )}
 
         <button
           onClick={submit}

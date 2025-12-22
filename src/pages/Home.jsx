@@ -6,23 +6,23 @@ export default function Home() {
   const items = [
     {
       title: "Latest Movies",
-      image: "https://picsum.photos/400/300?1",
-      link: "https://t.me/your_movie_channel",
+      image: "../../public/img1.jpeg",
+      link: "https://t.me/+BBYKIyRXCIo0ZTZl",
     },
     {
       title: "Web Series",
-      image: "https://picsum.photos/400/300?2",
-      link: "https://t.me/your_series_channel",
+      image: "../../public/img2.jpeg",
+      link: "https://t.me/+BBYKIyRXCIo0ZTZl",
     },
     {
-      title: "Programming Courses",
-      image: "https://picsum.photos/400/300?3",
-      link: "https://t.me/your_course_channel",
+      title: "Blue films",
+      image: "../../public/img3.jpeg",
+      link: "https://t.me/+BBYKIyRXCIo0ZTZl",
     },
     {
-      title: "Premium Content",
-      image: "https://picsum.photos/400/300?4",
-      link: "https://t.me/your_premium_channel",
+      title: "Sexy hub",
+      image: "../../public/img4.jpeg",
+      link: "https://t.me/+BBYKIyRXCIo0ZTZl",
     },
   ];
 

@@ -5,23 +5,15 @@ export default function AdminHeader() {
         Admin Panel
       </h1>
 
-      <nav className="space-x-4">
-        <a href="/admin" className="hover:text-indigo-400">
-          Users
-        </a>
-        <a href="/admin/profile" className="hover:text-indigo-400">
-          My Profile
-        </a>
-        <button
-          onClick={() => {
-            localStorage.clear();
-            window.location.href = "/login";
-          }}
-          className="bg-indigo-600 px-4 py-1 rounded hover:bg-indigo-700"
-        >
-          Logout
-        </button>
-      </nav>
+      <button
+        onClick={() => {
+          localStorage.clear();
+          window.location.href = "/login";
+        }}
+        className="bg-red-600 px-4 py-1 rounded hover:bg-red-700"
+      >
+        Logout
+      </button>
     </header>
   );
 }
