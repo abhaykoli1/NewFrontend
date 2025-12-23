@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   // baseURL: "http://localhost:5000/api",
-  baseURL: "https://loginapi.battelgame.com",
+  baseURL: "https://loginapi.battelgame.com/api",
 });
 
 API.interceptors.request.use((req) => {

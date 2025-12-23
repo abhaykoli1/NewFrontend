@@ -20,9 +20,7 @@ export default function Signup() {
 
   // 🔢 get max digits from regex
   const getMaxDigits = () => {
-    const c = countryCodes.find(
-      (c) => c.code === form.countryCode
-    );
+    const c = countryCodes.find((c) => c.code === form.countryCode);
     if (!c) return 15;
 
     const match = c.pattern.toString().match(/\{(\d+),?(\d+)?\}/);
@@ -40,14 +38,17 @@ export default function Signup() {
     }
 
     try {
-      await API.post("/auth/signup", {
+      const res = await API.post("/auth/signup", {
         ...form,
         phone: `${form.countryCode}${form.phone}`,
       });
 
+      console.log(res);
+
       alert("Signup successful");
       window.location = "/login";
     } catch (err) {
+      console.log(err);
       setError(err.response?.data?.message || "Signup failed");
     }
   };
@@ -57,17 +58,13 @@ export default function Signup() {
       <AuthHeader rightText="Log In" rightLink="/login" />
 
       <div className="flex flex-col items-center mt-14 px-6">
-        <h1 className="text-3xl font-bold mb-2">
-          Create your VMX Account
-        </h1>
+        <h1 className="text-3xl font-bold mb-2">Create your VMX Account</h1>
 
         <Input
           icon={<User />}
           placeholder="First Name"
           value={form.name}
-          onChange={(e) =>
-            setForm({ ...form, name: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
 
         {/* 📞 Phone Input FIXED */}
@@ -97,9 +94,7 @@ export default function Signup() {
           icon={<Mail />}
           placeholder="Email Address"
           value={form.email}
-          onChange={(e) =>
-            setForm({ ...form, email: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
 
         {/* 🔐 Password */}
@@ -110,18 +105,14 @@ export default function Signup() {
             placeholder="Password"
             className="w-full outline-none text-black"
             value={form.password}
-            onChange={(e) =>
-              setForm({ ...form, password: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
           <button onClick={() => setShow(!show)}>
             {show ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
 
-        {error && (
-          <p className="text-red-400 text-sm mb-2">{error}</p>
-        )}
+        {error && <p className="text-red-400 text-sm mb-2">{error}</p>}
 
         <button
           onClick={submit}
