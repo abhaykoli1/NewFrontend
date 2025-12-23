@@ -1,9 +1,7 @@
 export default function AdminHeader() {
   return (
     <header className="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-      <h1 className="text-xl font-bold text-indigo-400">
-        Admin Panel
-      </h1>
+      <h1 className="text-xl font-bold text-indigo-400">Admin Panel</h1>
 
       <button
         onClick={() => {
